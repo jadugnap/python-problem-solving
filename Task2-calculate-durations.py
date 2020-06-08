@@ -22,23 +22,17 @@ Print a message:
 "<telephone number> spent the longest time, <total time> seconds, on the phone during 
 September 2016.".
 """
-max_duration = 0
-max_duration_number = ""
 duration_dict = dict()
-
 for call_record in calls:
     # calculate callers duration = new + existing duration
     total_duration = int(call_record[3]) + duration_dict.get(call_record[0], 0)
     duration_dict[call_record[0]] = total_duration
-    if max_duration < total_duration:
-        max_duration_number = call_record[0]
-        max_duration = total_duration
     
     # calculate receivers duration = new + existing duration
     total_duration = int(call_record[3]) + duration_dict.get(call_record[1], 0)
     duration_dict[call_record[1]] = total_duration
-    if max_duration < total_duration:
-        max_duration_number = call_record[1]
-        max_duration = total_duration
 
+# find number with max duration on call
+max_on_call = max(duration_dict.items(), key=lambda x: x[1])
+max_duration_number, max_duration = max_on_call[0], max_on_call[1]
 print("{0} spent the longest time, {1} seconds, on the phone during September 2016.".format(max_duration_number, max_duration))

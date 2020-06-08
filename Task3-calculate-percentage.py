@@ -38,22 +38,27 @@ Print the answer as part of a message:
 The list of codes should be print out one per line in lexicographic order with no duplicates.
 """
 
-def get_fixed_line(number):
+def get_code(number):
     """
-    Get fixed_line code (0xx) from a given telephone number.
+    Get area code (0xx)/(140) or mobile prefix (xxxx) from a given telephone number.
     
     Arguments:
         number (string)
     Returns:
-        fixed_line code (string)
+        area code / mobile prefix (string)
     """
-    last_index = number.find(')')
-    return number[:last_index+1]
+    if number[0] == '(':
+        last_index = number.find(')')
+        return number[:last_index+1]
+    elif number[:3] == "140":
+        return "140"
+    else:
+        return number[:4]
 
-# get all numbers receiving calls from Bangalore
-receivers = [c[1] for c in calls if get_fixed_line(c[0]) == "(080)"]
+# get all codes receiving calls from Bangalore
+receiver_codes = [get_code(c[1]) for c in calls if get_code(c[0]) == "(080)"]
 print("The numbers called by people in Bangalore have codes:")
-print("\n".join(sorted(set(receivers))))
+print("\n".join(sorted(set(receiver_codes))))
 
 """
 Part B: What percentage of calls from fixed lines in Bangalore are made
@@ -67,6 +72,6 @@ to other fixed lines in Bangalore."
 The percentage should have 2 decimal digits
 """
 
-bangalore_count = sum([1 for number in receivers if get_fixed_line(number) == "(080)"])
-percentage = "{:.2f}".format(100.0 * bangalore_count / len(receivers))
+bangalore_count = sum([1 for code in receiver_codes if code == "(080)"])
+percentage = "{:.2f}".format(100.0 * bangalore_count / len(receiver_codes))
 print("{0} percent of calls from fixed lines in Bangalore are calls to other fixed lines in Bangalore.".format(percentage))

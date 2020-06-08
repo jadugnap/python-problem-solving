@@ -36,28 +36,27 @@ Worst-case complexity: O(n) x O(1) + O(n) x O(1) = O(2n) = O(n)
 O(n) `for call_record in calls:`
 - O(1) `total_duration = ...`
 - O(1) `duration_dict[...] = total_duration`
-- O(1) `max_duration_number = call_record[...]`
-- O(1) `max_duration = total_duration`
+O(n) `max_on_call = max(duration_dict.items(), key=lambda x: x[1])`
 
-Worst-case complexity: O(n) x O(4) = O(n)
+Worst-case complexity: O(2n) + O(n) = O(3n) = O(n)
 ####  Task 2 Complexity: O(n)
 
 
 ### Task 3 - percentage calculation
 
-O(2n) `receivers = [c[1] for c in calls if get_fixed_line(c[0]) == "(080)"]`
-- O(n) `def get_fixed_line(number):`
-- O(n) `c[1] for c in calls`
+O(4n) `receiver_codes = [get_code(c[1]) for c in calls if get_code(c[0]) == "(080)"]`
+- O(n) `for c in calls`
+- O(4) `def get_code(number):`
 
-O(n log(n)) `sorted(set(receivers))`
+O(n log(n)) `sorted(set(receiver_codes))`
 
-O(2n) `bangalore_count = sum([1 for number in receivers if get_fixed_line(number) == "(080)"])`
-- O(n) `def get_fixed_line(number):`
-- O(n) `1 for number in receivers`
+O(n) `bangalore_count = sum([1 for code in receiver_codes if code == "(080)"])`
+- O(n) `for code in receiver_codes`
+- O(1) `sum(list_len_n)`
 
 O(1) `percentage = "{:.2f}".format(100.0 * bangalore_count / len(receivers))`
 
-Worst-case complexity: O(2n) + O(n log(n)) + O(2n) + O(1) = O(n log(n))
+Worst-case complexity: O(4n) + O(n log(n)) + O(n) + O(1) = O(n log(n))
 ####  Task 3 Complexity: O(n log(n))
 
 
